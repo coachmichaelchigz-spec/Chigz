@@ -1,13 +1,703 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#0a0a0f" />
-    <title>Coach Michael</title>
-  </head>
-  <body style="margin: 0; background: #0a0a0f;">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#13361f" />
+  <meta name="description" content="Monate Guest House — peaceful, secure and affordable accommodation in the heart of Tzaneen, Limpopo. Book your room today." />
+  <title>Monate Guest House | Peaceful Stays in Tzaneen, Limpopo</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============ DESIGN TOKENS ============ */
+    :root {
+      --green-900: #0d2615;
+      --green-800: #13361f;
+      --green-700: #1c4a2c;
+      --green-600: #276b3f;
+      --gold:      #c9a14a;
+      --gold-light:#e3c478;
+      --cream:     #faf7f0;
+      --white:     #ffffff;
+      --ink:       #1f2a22;
+      --muted:     #5e6b62;
+      --shadow:    0 18px 50px rgba(13, 38, 21, 0.18);
+      --radius:    18px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .display { font-family: 'Playfair Display', Georgia, serif; line-height: 1.12; }
+
+    a { text-decoration: none; color: inherit; }
+
+    .wrap { width: min(1140px, 92%); margin-inline: auto; }
+
+    section { padding: clamp(64px, 9vw, 110px) 0; }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: .78rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      color: var(--green-800);
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .section-lead {
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .center { text-align: center; }
+    .center .section-lead { margin-inline: auto; }
+
+    /* ============ BUTTONS ============ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 15px 30px;
+      border-radius: 999px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+      will-change: transform;
+    }
+    .btn:hover { transform: translateY(-3px); }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--green-900);
+      box-shadow: 0 12px 30px rgba(201, 161, 74, 0.4);
+    }
+    .btn-green {
+      background: var(--green-700);
+      color: var(--white);
+      box-shadow: 0 12px 30px rgba(28, 74, 44, 0.35);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255,255,255,0.6);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+    .btn-whatsapp { background: #25d366; color: #fff; box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4); }
+
+    /* ============ HEADER ============ */
+    header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      transition: background .35s ease, box-shadow .35s ease, padding .35s ease;
+      padding: 20px 0;
+    }
+    header.scrolled {
+      background: rgba(13, 38, 21, 0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 24px rgba(0,0,0,.25);
+      padding: 12px 0;
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 1.7rem;
+      color: var(--white);
+      letter-spacing: .02em;
+    }
+    .logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 30px; align-items: center; }
+    .nav-links a {
+      color: rgba(255,255,255,0.88);
+      font-weight: 500;
+      font-size: .96rem;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--green-900) !important;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .nav-toggle { display: none; background: none; border: 0; cursor: pointer; }
+    .nav-toggle span { display: block; width: 26px; height: 2px; background: #fff; margin: 6px 0; transition: .3s; }
+
+    /* ============ HERO ============ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      color: var(--white);
+      padding-top: 90px;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(201,161,74,.22), transparent 60%),
+        linear-gradient(160deg, var(--green-900) 0%, var(--green-700) 55%, var(--green-800) 100%);
+      overflow: hidden;
+    }
+    /* decorative garden glow / blue LED nod */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -30% -10%;
+      height: 45%;
+      background: radial-gradient(closest-side, rgba(70, 130, 255, 0.25), transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,24,14,.45), rgba(8,24,14,.75)); }
+    .hero .wrap { position: relative; z-index: 2; max-width: 760px; }
+    .rating-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: .9rem;
+      font-weight: 500;
+      margin-bottom: 26px;
+      backdrop-filter: blur(6px);
+    }
+    .rating-badge .stars { color: var(--gold-light); letter-spacing: 2px; }
+    .hero h1 {
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+    .hero h1 .accent { color: var(--gold-light); }
+    .hero p.sub {
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      color: rgba(255,255,255,0.9);
+      max-width: 580px;
+      margin-bottom: 18px;
+      font-weight: 300;
+    }
+    .urgency {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-light);
+      font-weight: 600;
+      font-size: .95rem;
+      margin-bottom: 30px;
+    }
+    .urgency .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--gold-light);
+      box-shadow: 0 0 0 0 rgba(227,196,120,.7);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(227,196,120,.7); }
+      70% { box-shadow: 0 0 0 12px rgba(227,196,120,0); }
+      100% { box-shadow: 0 0 0 0 rgba(227,196,120,0); }
+    }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 16px; }
+
+    /* ============ ABOUT ============ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: clamp(32px, 5vw, 70px);
+      align-items: center;
+    }
+    .about-img {
+      border-radius: var(--radius);
+      min-height: 380px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(160deg, rgba(13,38,21,.15), rgba(13,38,21,.55)),
+        linear-gradient(135deg, var(--green-600), var(--green-800) 70%);
+    }
+    .about-img::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(201,161,74,.4), transparent 45%),
+                  radial-gradient(circle at 80% 90%, rgba(70,130,255,.35), transparent 40%);
+    }
+    .about-img .stat {
+      position: absolute;
+      left: 24px; bottom: 24px;
+      background: rgba(255,255,255,.95);
+      color: var(--green-800);
+      padding: 18px 22px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    .about-img .stat strong { font-family: 'Playfair Display', serif; font-size: 1.8rem; display: block; color: var(--gold); }
+    .about p { color: var(--muted); margin-bottom: 16px; }
+    .feature-pills { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    .pill {
+      background: rgba(39,107,63,.1);
+      color: var(--green-700);
+      border: 1px solid rgba(39,107,63,.2);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+
+    /* ============ AMENITIES ============ */
+    .amenities { background: var(--white); }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 26px;
+      margin-top: 50px;
+    }
+    .card {
+      background: var(--cream);
+      border: 1px solid rgba(13,38,21,.07);
+      border-radius: var(--radius);
+      padding: 34px 30px;
+      transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: rgba(201,161,74,.5); }
+    .card .ico {
+      width: 58px; height: 58px;
+      display: grid; place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--green-700), var(--green-600));
+      color: var(--gold-light);
+      margin-bottom: 20px;
+    }
+    .card .ico svg { width: 28px; height: 28px; }
+    .card h3 { font-size: 1.25rem; color: var(--green-800); margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: .96rem; }
+
+    /* ============ LOCATION ============ */
+    .location { background: linear-gradient(180deg, var(--cream), #f1ede2); }
+    .loc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 60px); align-items: stretch; }
+    .map-frame {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      min-height: 380px;
+      border: 4px solid var(--white);
+    }
+    .map-frame iframe { width: 100%; height: 100%; min-height: 380px; border: 0; display: block; }
+    .loc-list { list-style: none; display: grid; gap: 18px; margin: 26px 0 30px; }
+    .loc-list li { display: flex; gap: 14px; align-items: flex-start; }
+    .loc-list .badge {
+      flex: 0 0 auto;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: grid; place-items: center;
+      background: rgba(201,161,74,.16);
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .loc-list strong { display: block; color: var(--green-800); }
+    .loc-list span { color: var(--muted); font-size: .93rem; }
+
+    /* ============ REVIEWS ============ */
+    .reviews { background: var(--green-800); color: var(--white); }
+    .reviews .section-title { color: var(--white); }
+    .reviews-head { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .google-chip {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      padding: 10px 20px; border-radius: 999px; font-weight: 600;
+    }
+    .google-chip .big { font-size: 1.3rem; color: var(--gold-light); }
+    .review-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 26px;
+      margin-top: 50px;
+    }
+    .review {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: 32px 30px;
+      backdrop-filter: blur(4px);
+    }
+    .review .stars { color: var(--gold-light); font-size: 1.1rem; letter-spacing: 3px; margin-bottom: 16px; }
+    .review .quote { font-size: 1.1rem; line-height: 1.6; margin-bottom: 22px; }
+    .review .who { display: flex; align-items: center; gap: 14px; }
+    .review .avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-weight: 700; color: var(--green-900);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    }
+    .review .who strong { display: block; }
+    .review .who span { font-size: .85rem; color: rgba(255,255,255,.6); }
+
+    /* ============ BOOKING CTA ============ */
+    .booking {
+      text-align: center;
+      color: var(--white);
+      background:
+        radial-gradient(900px 500px at 50% -20%, rgba(201,161,74,.3), transparent 60%),
+        linear-gradient(135deg, var(--green-900), var(--green-700));
+    }
+    .booking h2 { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 16px; }
+    .booking p { color: rgba(255,255,255,.85); max-width: 560px; margin: 0 auto 14px; font-size: 1.08rem; }
+    .booking .urgency { justify-content: center; margin: 6px auto 30px; }
+    .booking-cta { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+
+    /* ============ FOOTER ============ */
+    footer { background: var(--green-900); color: rgba(255,255,255,.78); padding: 60px 0 30px; }
+    .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+    .foot-grid h4 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 1.2rem; margin-bottom: 16px; }
+    .foot-logo { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.6rem; color: #fff; margin-bottom: 14px; }
+    .foot-logo span { color: var(--gold); }
+    .foot-grid a { color: rgba(255,255,255,.78); transition: color .2s; display: inline-block; }
+    .foot-grid a:hover { color: var(--gold-light); }
+    .foot-list { list-style: none; display: grid; gap: 10px; }
+    .foot-bottom {
+      margin-top: 40px; padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      text-align: center; font-size: .88rem; color: rgba(255,255,255,.55);
+    }
+
+    /* ============ WHATSAPP FLOAT ============ */
+    .wa-float {
+      position: fixed;
+      right: 22px; bottom: 22px;
+      z-index: 90;
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      background: #25d366;
+      display: grid; place-items: center;
+      box-shadow: 0 12px 30px rgba(37,211,102,.45);
+      transition: transform .25s ease;
+      animation: bob 2.6s ease-in-out infinite;
+    }
+    .wa-float:hover { transform: scale(1.08); }
+    .wa-float svg { width: 34px; height: 34px; }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    /* ============ SCROLL ANIMATIONS ============ */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .wa-float, .urgency .dot { animation: none; }
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 880px) {
+      .about-grid, .loc-grid, .foot-grid { grid-template-columns: 1fr; }
+      .about-img { min-height: 280px; order: -1; }
+      .nav-links {
+        position: fixed;
+        inset: 0 0 0 auto;
+        width: min(280px, 80%);
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+        background: rgba(13,38,21,.98);
+        backdrop-filter: blur(10px);
+        transform: translateX(100%);
+        transition: transform .35s ease;
+        box-shadow: -10px 0 40px rgba(0,0,0,.4);
+      }
+      .nav-links.open { transform: translateX(0); }
+      .nav-toggle { display: block; z-index: 110; }
+      .foot-bottom { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header id="header">
+    <nav class="wrap nav">
+      <a href="#hero" class="logo">Monate<span>.</span></a>
+      <div class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#amenities">Rooms</a>
+        <a href="#location">Location</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#book" class="nav-cta">Book Now</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="wrap">
+      <div class="rating-badge">
+        <span class="stars">★★★★☆</span>
+        <span><strong>3.9</strong> on Google · 10 reviews</span>
+      </div>
+      <h1>Your Peaceful Stay in the <span class="accent">Heart of Tzaneen</span></h1>
+      <p class="sub">Affordable, secure and welcoming accommodation in Medipark, Tzaneen — minutes from the best restaurants and attractions Limpopo has to offer.</p>
+      <div class="urgency"><span class="dot"></span> Limited rooms available — book now</div>
+      <div class="hero-cta">
+        <a href="#book" class="btn btn-gold">Book Your Room Now →</a>
+        <a href="#amenities" class="btn btn-outline">View Rooms</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <span class="eyebrow">Welcome to Monate</span>
+        <h2 class="section-title">A Warm, Restful Home Away From Home</h2>
+        <p>Tucked away on Hospital Street in the leafy Medipark suburb, <strong>Monate Guest House</strong> offers the kind of peaceful, unhurried stay that's hard to find. Whether you're in Tzaneen for business, family, or a getaway through Limpopo, you'll feel instantly at ease.</p>
+        <p>Our comfortable en-suite rooms, secure parking and tranquil garden make Monate the affordable choice that never compromises on comfort. Relax with refreshments at the bar, unwind under the soft glow of our garden lighting, and wake up ready to explore.</p>
+        <div class="feature-pills">
+          <span class="pill">Peaceful &amp; Quiet</span>
+          <span class="pill">Secure &amp; Safe</span>
+          <span class="pill">Budget-Friendly</span>
+          <span class="pill">Central Location</span>
+        </div>
+      </div>
+      <div class="about-img reveal">
+        <div class="stat">
+          <strong>4.0</strong>
+          Things-to-do score nearby
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AMENITIES ============ -->
+  <section class="amenities" id="amenities">
+    <div class="wrap center">
+      <span class="eyebrow">Rooms &amp; Amenities</span>
+      <h2 class="section-title">Everything You Need for a Comfortable Stay</h2>
+      <p class="section-lead">Thoughtful touches in every room, plus the essentials that make all the difference.</p>
+    </div>
+    <div class="wrap">
+      <div class="cards">
+        <div class="card reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12V5a1 1 0 011-1h4M9 12V4M4 12h16v4a3 3 0 01-3 3H7a3 3 0 01-3-3v-4zM7 19v2M17 19v2"/></svg></div>
+          <h3>En-Suite Bathroom</h3>
+          <p>Private, clean en-suite bathrooms in every room — your own space, your own comfort.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+          <h3>TV in Every Room</h3>
+          <p>Unwind after a long day with a television in each room to catch up on your favourites.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 11l1.5-4.5A2 2 0 018.4 5h7.2a2 2 0 011.9 1.5L19 11M5 11h14v5a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H8v1a1 1 0 01-1 1H6a1 1 0 01-1-1v-5z"/><circle cx="7.5" cy="14.5" r="1"/><circle cx="16.5" cy="14.5" r="1"/></svg></div>
+          <h3>Secure Parking</h3>
+          <p>Park with peace of mind. On-site secure parking keeps your vehicle safe overnight.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l-1 7a5 5 0 01-10 0L6 3zM9 21h6M12 15v6"/></svg></div>
+          <h3>Bar &amp; Refreshments</h3>
+          <p>A relaxed bar and fridge area for a cold drink and good company at the end of the day.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22c4-3 7-6.5 7-11a7 7 0 10-14 0c0 4.5 3 8 7 11zM12 3v18"/></svg></div>
+          <h3>Garden &amp; Outdoor Area</h3>
+          <p>Breathe easy in our tranquil garden, beautifully lit with soft blue LED lighting at night.</p>
+        </div>
+        <div class="card reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12.5a10 10 0 0114 0M8 15.5a6 6 0 018 0"/><circle cx="12" cy="19" r="1.2"/></svg></div>
+          <h3>Free WiFi</h3>
+          <p>Stay connected throughout your visit with complimentary wireless internet access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOCATION ============ -->
+  <section class="location" id="location">
+    <div class="wrap loc-grid">
+      <div class="map-frame reveal">
+        <iframe
+          title="Monate Guest House location"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=30%20Hospital%20Street%2C%20Medipark%2C%20Tzaneen%2C%200850&t=&z=15&ie=UTF8&iwloc=&output=embed">
+        </iframe>
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">Find Us</span>
+        <h2 class="section-title">Perfectly Placed in Tzaneen</h2>
+        <p class="section-lead" style="margin-bottom:6px;">30 Hospital Street, Medipark, Tzaneen, Limpopo, 0850</p>
+        <ul class="loc-list">
+          <li>
+            <span class="badge">🍽</span>
+            <div><strong>Great Restaurants Nearby</strong><span>Proximity-to-dining score of 3.8 — plenty of tasty options just minutes away.</span></div>
+          </li>
+          <li>
+            <span class="badge">🎯</span>
+            <div><strong>Things To Do</strong><span>Top-rated 4.0 for nearby attractions and activities around Tzaneen.</span></div>
+          </li>
+          <li>
+            <span class="badge">🏥</span>
+            <div><strong>Central Medipark</strong><span>Close to Tzaneen's medical facilities and main routes — easy to reach.</span></div>
+          </li>
+        </ul>
+        <a class="btn btn-green" href="https://maps.google.com/?q=30+Hospital+Street,+Medipark,+Tzaneen,+0850" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section class="reviews" id="reviews">
+    <div class="wrap reviews-head center">
+      <span class="eyebrow">Guest Reviews</span>
+      <h2 class="section-title">Loved by Our Guests</h2>
+      <div class="google-chip">
+        <span class="big">★ 3.9</span>
+        <span>Rated on Google · 10 reviews</span>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="review-cards">
+        <div class="review reveal">
+          <div class="stars">★★★★★</div>
+          <p class="quote">“One of the best and peaceful place. Comfortable, quiet and exactly what I needed for my stay in Tzaneen.”</p>
+          <div class="who">
+            <div class="avatar">M</div>
+            <div><strong>Michael Chigodora</strong><span>Google Review · 5/5</span></div>
+          </div>
+        </div>
+        <div class="review reveal">
+          <div class="stars">★★★★★</div>
+          <p class="quote">“Lovely, welcoming spot with friendly hosts and a calm atmosphere. Would happily stay again…”</p>
+          <div class="who">
+            <div class="avatar">V</div>
+            <div><strong>Venus</strong><span>Google Review · 5/5</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOOKING CTA ============ -->
+  <section class="booking" id="book">
+    <div class="wrap">
+      <span class="eyebrow">Reserve Today</span>
+      <h2>Check Availability &amp; Book Tonight</h2>
+      <p>Secure your peaceful room at Monate Guest House. Message us on WhatsApp or give us a call — we'll confirm your stay in minutes.</p>
+      <div class="urgency"><span class="dot"></span> Limited rooms available — book now</div>
+      <div class="booking-cta">
+        <a class="btn btn-whatsapp" href="https://wa.me/27000000000?text=Hi%20Monate%20Guest%20House%2C%20I'd%20like%20to%20check%20room%20availability." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Book on WhatsApp
+        </a>
+        <a class="btn btn-gold" href="tel:+27000000000">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Call to Book
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap foot-grid">
+      <div>
+        <div class="foot-logo">Monate<span>.</span> Guest House</div>
+        <p>Peaceful, secure and affordable accommodation in the heart of Tzaneen, Limpopo. Your comfortable home away from home.</p>
+        <div class="rating-badge" style="margin-top:18px;">
+          <span class="stars" style="color:var(--gold-light)">★★★★☆</span>
+          <span><strong>3.9</strong> · 10 Google reviews</span>
+        </div>
+      </div>
+      <div>
+        <h4>Visit Us</h4>
+        <ul class="foot-list">
+          <li>30 Hospital Street</li>
+          <li>Medipark, Tzaneen</li>
+          <li>Limpopo, 0850</li>
+          <li><a href="https://maps.google.com/?q=30+Hospital+Street,+Medipark,+Tzaneen,+0850" target="_blank" rel="noopener">View on Google Maps →</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get in Touch</h4>
+        <ul class="foot-list">
+          <li><a href="tel:+27000000000">+27 00 000 0000</a></li>
+          <li><a href="https://wa.me/27000000000" target="_blank" rel="noopener">WhatsApp Us</a></li>
+          <li><a href="#book">Book a Room</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap foot-bottom">
+      © <span id="year"></span> Monate Guest House, Tzaneen. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ============ WHATSAPP FLOAT ============ -->
+  <a class="wa-float" href="https://wa.me/27000000000?text=Hi%20Monate%20Guest%20House%2C%20I'd%20like%20to%20check%20room%20availability." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="#fff"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.607zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Sticky header
+    const header = document.getElementById('header');
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 30);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Mobile nav
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    links.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      })
+    );
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i % 3) * 0.08 + 's';
+      io.observe(el);
+    });
+  </script>
+</body>
 </html>
